@@ -5,7 +5,7 @@ import sys
 
 from NodeCache import NodeCache
 from kubernetes import client, config
-from agent.sender import gRPCClient, data_generator
+from sender import gRPCClient
 from collector import ClusterCollector
 from agent import config as cfg  # 환경 변수 로드된 설정 모듈 (cfg.GRPC_HOST 등)
 
@@ -17,8 +17,8 @@ def main():
         config.load_incluster_config()
     except Exception:
         config.load_kube_config(
-            context="k8sm1@kubernetes",
-            config_file="/Users/hwan/Library/Application Support/OpenLens/kubeconfigs/6ef3302a-07b0-4a54-849d-244cba341f05"
+            context=cfg.K8S_CONTEXT,
+            config_file=cfg.K8S_CONFIG_FILE
         )
 
     # ClusterCollector에 config 전달
@@ -35,7 +35,7 @@ def main():
 
     grpc_client = gRPCClient(host=grpc_host, port=grpc_port, token=grpc_token)
 
-    # Graceful shutdown 핸들러
+    # Graceful shutdown
     def shutdown(*args):
         print("\n[agent] Shutting down gracefully...")
         collector.stop()
