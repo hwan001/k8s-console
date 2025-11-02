@@ -25,7 +25,7 @@ public class StreamServiceImpl extends StreamServiceGrpc.StreamServiceImplBase {
             @Override
             public void onNext(StreamPayload payload) {
                 try {
-                    String channel = "username:7:";
+                    String channel = "username:7";
 
                     if (payload.hasMetric()) {
                         Metric metric = payload.getMetric();
