@@ -4,7 +4,7 @@ import hashlib
 import base64
 import threading
 from kubernetes import client, watch
-from NodeCache import NodeCache
+from agent.src.agent.NodeCache import NodeCache
 
 
 class ClusterCollector:
