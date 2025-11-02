@@ -38,7 +38,11 @@ interface LatencyPayload {
 	action: "ping" | "pong";
 }
 
-export type Payload = MetricPayload | LogPayload | ControlPayload | LatencyPayload;
+export type Payload =
+	| MetricPayload
+	| LogPayload
+	| ControlPayload
+	| LatencyPayload;
 
 interface WebSocketState {
 	socket: WebSocket | null;
@@ -66,8 +70,14 @@ export const useWebSocketStore = create<WebSocketState>((set, get) => ({
 
 	connect: () => {
 		if (get().socket) return;
+		
+		const wsProtocol = window.location.protocol === "https:" ? "wss" : "ws";
+		const wsUrl = API_BASE
+			? `ws://${API_BASE.replace(/^https?:\/\//, "")}/ws`
+			: `${wsProtocol}://${window.location.host}/api/ws`;
 
-		const ws = new WebSocket(`ws://${API_BASE}/ws`);
+		const ws = new WebSocket(wsUrl);
+
 		let pingTimer: NodeJS.Timeout | null = null;
 		let lastPingTime: number | null = null;
 
