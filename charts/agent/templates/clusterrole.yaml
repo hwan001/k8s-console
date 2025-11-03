@@ -4,7 +4,7 @@ metadata:
   name: {{ include "agent.fullname" . }}
 rules:
   - apiGroups: [""]
-    resources: ["pods", "nodes", "namespaces"]
+    resources: ["pods", "nodes", "namespaces", "configmaps"]
     verbs: ["get", "list", "watch"]
   - apiGroups: ["apps"]
     resources: ["deployments"]

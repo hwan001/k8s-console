@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  labels:
+    app: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+        - name: redis
+          image: redis:7.2
+          env:
+            - name: REDIS_PASSWORD
+              value: {{ .Values.redis.password | quote }}
+            - name: REDIS_APPENDONLY
+              value: {{ .Values.redis.appendonly | quote }}
+            - name: REDIS_NOTIFY_EVENTS
+              value: {{ .Values.redis.notifyKeyspaceEvents | quote }}
+          command:
+            - "sh"
+            - "-c"
+            - >
+              redis-server
+              --requirepass "${REDIS_PASSWORD:-}"
+              --appendonly "$REDIS_APPENDONLY"
+              --notify-keyspace-events "$REDIS_NOTIFY_EVENTS"

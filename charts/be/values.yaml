@@ -1,0 +1,48 @@
+replicaCount: 1
+
+image:
+  repository: ghcr.io/hwan001/k8s-console/be
+  tag: "2025-11-02-03"
+  pullPolicy: IfNotPresent
+
+env:
+  HASURA_ENDPOINT: "https://hasura.avgmax.team/v1/graphql"
+  REDIS_HOST: "redis.k8s-console.svc.cluster.local"
+  REDIS_PORT: 6379
+
+secret:
+  HASURA_SECRET: "super-secret-key"
+
+ingress:
+  enabled: false
+
+service:
+  type: ClusterIP
+  ports:
+    http: 8080
+    grpc: 50051
+
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  name: ""
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
+
+redis:
+  password: ""
+  appendonly: "yes"
+  notifyKeyspaceEvents: "Ex"
+
+# resources:
+#   requests:
+#     cpu: 200m
+#     memory: 512Mi
+#   limits:
+#     cpu: 500m
+#     memory: 1Gi

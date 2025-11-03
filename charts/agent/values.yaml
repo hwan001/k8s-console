@@ -1,20 +1,21 @@
-# clusterName: "unknown" 
-namespace: "k8s-console-application"
+clusterName: "home" 
+# namespace: "k8s-console"
 replicaCount: 1
 
 image:
   repository: ghcr.io/hwan001/k8s-console/agent
-  tag: "latest"
+  tag: "2025-11-02-03"
   pullPolicy: IfNotPresent
 
 serviceAccount:
   create: true
   name: agent
 
-# config:
-#   grpc_host: be.k8s-console.svc.cluster.local
-#   grpc_port: "50051"
-#   poll_interval: "5"  # seconds
+config:
+  grpc_host: be.k8s-console.svc.cluster.local
+  grpc_port: 50051
+  poll_interval: 5
+  log_level: "debug"
 
 # secret:
 #   grpc_token: "super-secret-grpc-token"  # 실제 배포 시는 CI/CD에서 override
