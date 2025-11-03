@@ -1,0 +1,37 @@
+{
+  "recommendations": [
+    // Python
+    "ms-python.python",
+    "ms-python.black-formatter",
+    "charliermarsh.ruff",
+
+    // Go
+    "golang.go",
+
+    // Java
+    "vscjava.vscode-java-pack",
+
+    // YAML & Kubernetes
+    "redhat.vscode-yaml",
+    "ms-kubernetes-tools.vscode-kubernetes-tools",
+
+    // Frontend (Next.js / TypeScript)
+    "esbenp.prettier-vscode",
+    "ms-vscode.vscode-typescript-next",
+    "dsznajder.es7-react-js-snippets",
+    "bradlc.vscode-tailwindcss",
+    "yoavbls.pretty-ts-errors",
+
+    // Formatting & Common Tools
+    "EditorConfig.EditorConfig",
+    "foxundermoon.shell-format",
+
+    // Git & Collaboration
+    "eamodio.gitlens",
+    "github.vscode-pull-request-github",
+
+    // Misc Productivity
+    "streetsidesoftware.code-spell-checker",
+    "ms-azuretools.vscode-docker"
+  ]
+}

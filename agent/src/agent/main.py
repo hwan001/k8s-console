@@ -11,6 +11,7 @@ from agent import config as cfg  # 환경 변수 로드된 설정 모듈 (cfg.GR
 
 q = queue.Queue()
 
+
 def main():
     # Kubernetes 설정 로드 (in-cluster 우선)
     try:
@@ -31,7 +32,8 @@ def main():
     grpc_token = cfg.GRPC_TOKEN or ""
     poll_interval = cfg.POLL_INTERVAL
 
-    print(f"[agent] Starting gRPC client to {grpc_host}:{grpc_port} (poll={poll_interval}s)")
+    print(
+        f"[agent] Starting gRPC client to {grpc_host}:{grpc_port} (poll={poll_interval}s)")
 
     grpc_client = gRPCClient(host=grpc_host, port=grpc_port, token=grpc_token)
 

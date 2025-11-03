@@ -1,6 +1,8 @@
-from kubernetes import client
-import psutil
 import time
+
+import psutil
+from kubernetes import client
+
 
 class NodeCache:
     def __init__(self, ttl=300, config=None):
@@ -27,7 +29,8 @@ class NodeCache:
                 ) else "data"
 
                 conditions = {c.type: c.status for c in node.status.conditions}
-                status = "healthy" if conditions.get("Ready") == "True" else "down"
+                status = "healthy" if conditions.get(
+                    "Ready") == "True" else "down"
 
                 result.append({
                     "id": node.metadata.uid,

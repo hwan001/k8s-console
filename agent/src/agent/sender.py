@@ -1,7 +1,9 @@
-import grpc
+import queue
 import time
 import traceback
-import queue
+
+import grpc
+
 from agent import stream_pb2, stream_pb2_grpc
 
 
@@ -39,7 +41,7 @@ def data_generator(data_queue):
             item = data_queue.get(timeout=2)
             item_type = item.get("type")
             timestamp = float(item.get("timestamp", time.time()))
-            cluster_id = item.get("cluster", "unknown") 
+            cluster_id = item.get("cluster", "unknown")
 
             if item_type == "metric":
                 nodes = [
