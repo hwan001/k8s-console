@@ -1,14 +1,17 @@
 package io.h001.hconsole.global.websocket;
 
+import java.util.Collections;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.springframework.stereotype.Component;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.web.socket.WebSocketSession;
-import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.CloseStatus;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
 public class WebSocketHandler extends TextWebSocketHandler {
@@ -32,14 +35,6 @@ public class WebSocketHandler extends TextWebSocketHandler {
         Map<String, Object> msg = objectMapper.readValue(message.getPayload(), Map.class);
         String channel = (String) msg.get("channel");
         Object payload = msg.get("payload");
-
-        // // 레이턴시 측정용
-        // if ("system".equals(channel) && "ping".equals(payload)) {
-        // session.sendMessage(new TextMessage(
-        // objectMapper.writeValueAsString(Map.of("channel", "system", "payload",
-        // "pong"))));
-        // return;
-        // }
 
         if ("latency".equals(channel)) {
             handleLatencyMessage(session, payload);

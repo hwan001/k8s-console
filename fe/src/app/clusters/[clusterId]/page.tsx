@@ -1,15 +1,45 @@
 "use client";
 
-import { useEffect } from "react";
-import { useParams } from "next/navigation";
-import { CircularProgress, Typography, Box } from "@mui/material";
-import Layout from "@/app/_components/Layout";
-import { useClusterStore } from "@/app/_stores/ClusterStore";
-import { useClusterLiveStore } from "@/app/_stores/ClusterLiveStore";
-import ClusterInfo from "./components/ClusterInfo";
-import NodeTable from "./components/NodeTable";
-import LogViewer from "./components/LogViewer";
 import EnhancedTable from "@/app/_components/EnhancedTable";
+import Layout from "@/app/_components/Layout";
+import { useClusterLiveStore } from "@/app/_stores/ClusterLiveStore";
+import { useClusterStore } from "@/app/_stores/ClusterStore";
+import { Box, CircularProgress, Typography } from "@mui/material";
+import { useParams } from "next/navigation";
+import { useEffect } from "react";
+import ClusterInfo from "./components/ClusterInfo";
+import LogViewer from "./components/LogViewer";
+import NodeTable from "./components/NodeTable";
+
+const headCells = [
+  { id: "cluster", numeric: false, disablePadding: true, label: "Cluster" },
+  { id: "node", numeric: false, disablePadding: false, label: "Node" },
+  { id: "pod", numeric: false, disablePadding: false, label: "Pod" },
+  { id: "pod_ip", numeric: false, disablePadding: false, label: "IP" },
+  { id: "namespace", numeric: false, disablePadding: false, label: "Namespace" },
+  { id: "status", numeric: true, disablePadding: false, label: "Status" },
+];
+
+const rows = [
+  {
+    id: 1,
+    cluster: "h001-k8s",
+    node: "node1",
+    pod: "test-1-pod",
+    pod_ip: "192.168.0.55",
+    namespace: "test",
+    status: 1,
+  },
+  {
+    id: 2,
+    cluster: "h001-k8s",
+    node: "node2",
+    pod: "test-2-pod",
+    pod_ip: "192.168.0.56",
+    namespace: "default",
+    status: 0,
+  },
+];
 
 export default function ClusterDetailPage() {
   const { clusterId } = useParams<{ clusterId: string }>();
@@ -31,7 +61,7 @@ export default function ClusterDetailPage() {
     return () => unsubscribeCluster(clusterId);
   }, [clusterId]);
 
-  const cluster = clusters.find((c) => c.id === clusterId);
+  const cluster = clusters.find(c => c.id === clusterId);
 
   if (!cluster) {
     return (
@@ -68,7 +98,14 @@ export default function ClusterDetailPage() {
         </Box>
       </Box>
 
-      <EnhancedTable />
+      <EnhancedTable
+        title="Pods"
+        headCells={headCells}
+        rows={rows}
+        onAddRow={() => console.log("Add new row")}
+        onEditRow={row => console.log("Edit", row)}
+        onDeleteSelected={ids => console.log("Delete", ids)}
+      />
     </Layout>
   );
 }

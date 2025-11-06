@@ -75,8 +75,8 @@ def data_generator(data_queue):
                         message=item.get("message", ""),
                     )
                 )
-                print(
-                    f"[GEN][LOG] {item.get('level', 'INFO')}: {item.get('message', '')}")
+                # print(
+                #     f"[GEN][LOG] {item.get('level', 'INFO')}: {item.get('message', '')}")
             else:
                 print(f"[GEN] Unknown item type: {item_type}")
 

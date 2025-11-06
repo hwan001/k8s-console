@@ -1,12 +1,11 @@
-from datetime import datetime
 import queue
 import signal
 import sys
 
-from NodeCache import NodeCache
-from kubernetes import client, config
-from sender import gRPCClient
 from collector import ClusterCollector
+from kubernetes import config
+from sender import gRPCClient
+
 from agent import config as cfg  # 환경 변수 로드된 설정 모듈 (cfg.GRPC_HOST 등)
 
 q = queue.Queue()
@@ -17,6 +16,7 @@ def main():
     try:
         config.load_incluster_config()
     except Exception:
+        print(f"{cfg.K8S_CONTEXT}, {cfg.K8S_CONFIG_FILE}")
         config.load_kube_config(
             context=cfg.K8S_CONTEXT,
             config_file=cfg.K8S_CONFIG_FILE

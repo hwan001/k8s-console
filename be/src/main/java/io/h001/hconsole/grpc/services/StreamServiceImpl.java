@@ -1,8 +1,13 @@
 package io.h001.hconsole.grpc.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import io.grpc.stub.StreamObserver;
-import io.h001.hconsole.grpc.*;
+import io.h001.hconsole.grpc.Log;
+import io.h001.hconsole.grpc.Metric;
+import io.h001.hconsole.grpc.Response;
+import io.h001.hconsole.grpc.StreamPayload;
+import io.h001.hconsole.grpc.StreamServiceGrpc;
 import io.h001.hconsole.grpc.dto.LogResponse;
 import io.h001.hconsole.grpc.dto.MetricResponse;
 import io.h001.hconsole.redis.services.RedisPublisherService;
@@ -25,21 +30,21 @@ public class StreamServiceImpl extends StreamServiceGrpc.StreamServiceImplBase {
             @Override
             public void onNext(StreamPayload payload) {
                 try {
-                    String channel = "username:7";
+                    String channel = "username:7:";
 
                     if (payload.hasMetric()) {
                         Metric metric = payload.getMetric();
                         MetricResponse dto = MetricResponse.fromGrpc(metric);
                         String json = objectMapper.writeValueAsString(dto);
 
-                        redisPublisherService.publish(channel, json);
+                        redisPublisherService.publish(channel + "metric", json);
                         log.info("[STREAM][{}] Published metric: {}", channel, json);
-                    }else if (payload.hasLog()) {
+                    } else if (payload.hasLog()) {
                         Log logMsg = payload.getLog();
                         LogResponse dto = LogResponse.fromGrpc(logMsg);
                         String json = objectMapper.writeValueAsString(dto);
 
-                        redisPublisherService.publish(channel, json);
+                        redisPublisherService.publish(channel + "log", json);
                         log.info("[STREAM][{}] Published log: {}", channel, json);
                     }
 

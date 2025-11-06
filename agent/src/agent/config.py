@@ -1,7 +1,9 @@
 import os
+
 from dotenv import load_dotenv
 
-load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), "..", ".env"), override=True)
+# load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), "..", ".env"), override=True)
+load_dotenv(override=True)
 
 GRPC_HOST = os.getenv("GRPC_HOST")
 GRPC_PORT = os.getenv("GRPC_PORT")

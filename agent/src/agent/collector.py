@@ -1,8 +1,9 @@
-import time
-import logging
-import hashlib
 import base64
+import hashlib
+import logging
 import threading
+import time
+
 from kubernetes import client, watch
 from NodeCache import NodeCache
 
@@ -118,7 +119,8 @@ class ClusterCollector:
         self.log.info(
             f"[ClusterCollector] Cluster Fingerprint: {self.get_cluster_fingerprint()}")
         threading.Thread(target=self._metric_loop, daemon=True).start()
-        # threading.Thread(target=self._start_log_collectors, daemon=True).start()
+        threading.Thread(target=self._start_log_collectors,
+                         daemon=True).start()
 
     def stop(self):
         self.running = False
