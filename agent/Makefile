@@ -1,11 +1,11 @@
 
 LOCAL_TASKS := local-run proto-gen
-COMMON_TASKS := run clean proto 
+COMMON_TASKS := run proto
 
 .PHONY: $(BUILD_TASKS) $(COMMON_TASKS)
 
 run: local-run
-clean: docker-clean
+
 proto: proto-gen
 
 local-run:

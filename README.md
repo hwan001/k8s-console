@@ -1,72 +1,32 @@
-# h-console
+# k8s-console
 
-### Architecture
-```mermaid
-graph RL
-    subgraph oauthProviders["OAuth Providers"]
-        oauthProvidersGoogle["Google App (OAuth2.0)"]
-    end
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPLv3-blue.svg)](/LICENSE)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/hwan001/k8s-console/ci.yaml)](https://github.com/hwan001/k8s-console/actions)
+[![Pull Requests welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/hwan001/k8s-console/pulls)
 
-    subgraph server["server"]
-        serverProxy["reverse proxy"]
-        
-        subgraph serverFE["FE"]
-            serverFE1["FE1"]
-            serverFE2["FE2"]
-        end
+**k8s-console**은 여러 Kubernetes 클러스터를 중앙에서 실시간으로 모니터링하고 제어할 수 있는
+**agent 기반 RBAC 콘솔**입니다.
+추후 AWX처럼 원격 프로비저닝 기능을 지원할 예정입니다.
 
-        subgraph serverBE["BE"]
-            serverBE1["BE1"]
-            serverBE2["BE2"]
-            serverBE3["BE3"]
-        end
-        
-        subgraph serverRedis["redis (Aggregated, Central Store)"]
-            serverRedis1["Redis1"]
-        end
-    end
+- 웹 기반 실시간 모니터링
+- 클러스터/네임스페이스 단위 RBAC 제어
+- 에이전트 설치만으로 손쉬운 통합
+- 확장 가능한 백엔드 API
 
-    subgraph cluster1["cluster 1"]
-        cluster1_agent["Agent"] 
-        cluster1_agent -.gRPC.-> serverBE
-    end
+## 문서
 
-    subgraph cluster2["cluster 2"]
-        cluster2_agent["Agent"]
-        cluster2_agent -.gRPC.-> serverBE
-    end
+- [한국어 문서](/docs/ko/README.md)
+- [English Docs](/docs/en/README.md) _(coming soon)_
 
-    subgraph dataapilayer["Data API Layer"]
-        dataapilayerHasura["Hasura"]
-    end
-    
-    subgraph datalayer["Database"]
-        datalayerPostgresql["Postgresql"]
-    end
-    
-    users --> serverProxy
-    serverProxy --/--> serverFE
-    serverProxy --/api--> serverBE
-    serverFE <--ws/api--> serverBE
-    serverBE <--HTTPS--> dataapilayerHasura
-    serverBE <--> serverRedis
-    
-    dataapilayerHasura <--> datalayerPostgresql
+## 최신 이미지
 
-    serverBE <--API--> oauthProvidersGoogle
-    serverBE <--API--> OpenAI?
-    
-```
+| Platform | Image                               | Tag                                                                                                        | Link                                                                              |
+| -------- | ----------------------------------- | ---------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| GHCR     | `ghcr.io/hwan001/k8s-console/be`    | ![BE](https://img.shields.io/github/v/tag/hwan001/k8s-console?filter=be*&label=tag&cacheSeconds=300)       | [View](https://github.com/hwan001/k8s-console/pkgs/container/k8s-console%2Fbe)    |
+| GHCR     | `ghcr.io/hwan001/k8s-console/fe`    | ![FE](https://img.shields.io/github/v/tag/hwan001/k8s-console?filter=fe*&label=tag&cacheSeconds=300)       | [View](https://github.com/hwan001/k8s-console/pkgs/container/k8s-console%2Ffe)    |
+| GHCR     | `ghcr.io/hwan001/k8s-console/agent` | ![Agent](https://img.shields.io/github/v/tag/hwan001/k8s-console?filter=agent*&label=tag&cacheSeconds=300) | [View](https://github.com/hwan001/k8s-console/pkgs/container/k8s-console%2Fagent) |
 
+## License
 
-### 배포 구조
-
-- 로컬 개발/ 테스트: 각 디렉토리 Makefile 활용
-- CI(GHA): Dockerfile, root Makefile 활용
-- CD: gitops/ helm, ghcr 또는 oci 활용
-    - 작성 중
-- /에서 Makefile 로 로컬 도커 이미지 빌드, GHA 빌드 가능
-    ```sh
-    make build fe # make build fe be agent 로 여러개도 가능
-    make deploy fe # make deploy fe be agent -> 동일
-    ```
+This project is licensed under the **GNU Affero General Public License v3.0 (AGPLv3)**.
+See the [LICENSE](/LICENSE) file for details.
