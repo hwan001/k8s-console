@@ -1,0 +1,36 @@
+name: Clean up old tags by count
+
+on:
+  schedule:
+    - cron: '0 20 * * 0'  # 매주 일요일 20시 (UTC) -> 매주 월요일 05시 (KST)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup-tags:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Delete old tags (keep last 30)
+        run: |
+          git fetch --tags
+          KEEP=30
+
+          for PREFIX in be fe agent; do
+            echo "Checking tags for $PREFIX..."
+            TAGS=$(git tag -l "${PREFIX}-*" | sort -Vr)
+
+            COUNT=0
+            for TAG in $TAGS; do
+              COUNT=$((COUNT+1))
+              if [ $COUNT -gt $KEEP ]; then
+                echo "Deleting old tag: $TAG"
+                git push origin :refs/tags/$TAG
+              fi
+            done
+          done

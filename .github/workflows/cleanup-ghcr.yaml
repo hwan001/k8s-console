@@ -1,0 +1,36 @@
+name: Clean up old GHCR images
+
+on:
+  schedule:
+    - cron: '0 20 * * 0'  # 매주 일요일 20시 (UTC) -> 매주 월요일 05시 (KST)
+  workflow_dispatch:
+
+permissions:
+  packages: write
+  contents: read
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete old BE images
+        uses: actions/delete-package-versions@v5
+        with:
+          package-name: 'k8s-console/be'
+          package-type: 'container'
+          min-versions-to-keep: 5
+          delete-only-pre-release-versions: false
+
+      - name: Delete old FE images
+        uses: actions/delete-package-versions@v5
+        with:
+          package-name: 'k8s-console/fe'
+          package-type: 'container'
+          min-versions-to-keep: 5
+
+      - name: Delete old Agent images
+        uses: actions/delete-package-versions@v5
+        with:
+          package-name: 'k8s-console/agent'
+          package-type: 'container'
+          min-versions-to-keep: 5
