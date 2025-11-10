@@ -56,3 +56,7 @@ graph RL
     serverBE <--API--> OpenAI?
 
 ```
+
+### Agent -> BE
+
+- client-initiated bidirectional streaming

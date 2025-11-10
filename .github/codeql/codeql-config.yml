@@ -1,0 +1,22 @@
+name: k8s-console CodeQL config
+
+# CodeQL이 실행할 기본 쿼리 집합
+queries:
+  - uses: security-extended
+  - uses: security-and-quality
+
+# 분석할 경로 (특정 폴더만 지정 가능)
+paths:
+  - be
+  - fe
+  - agent
+
+# 제외할 경로 (node_modules, test 등)
+paths-ignore:
+  - '**/test/**'
+  - '**/node_modules/**'
+  - '**/build/**'
+  - '**/dist/**'
+  - '**/vendor/**'
+  - '**/__pycache__/**'
+  - '**/.next/**'
