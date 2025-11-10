@@ -1,0 +1,37 @@
+name: Cleanup jobs
+
+on:
+  schedule:
+    - cron: '0 20 * * 0'  # 매주 일요일 20시 (UTC) -> 매주 월요일 05시 (KST)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: read
+  issues: read
+  pull-requests: read
+  actions: read
+
+jobs:
+  cleanup-ghcr:
+    permissions:
+      packages: write
+      contents: read
+    uses: ./.github/workflows/cleanup-ghcr.yaml
+
+  cleanup-tags:
+    permissions:
+      contents: write
+    uses: ./.github/workflows/cleanup-tags.yaml
+
+  cleanup-issues:
+    permissions:
+      issues: write
+      pull-requests: write
+    uses: ./.github/workflows/cleanup-issues.yaml
+
+  cleanup-runs:
+    permissions:
+      actions: write
+      contents: read
+    uses: ./.github/workflows/cleanup-runs.yaml

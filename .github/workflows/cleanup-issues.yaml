@@ -1,0 +1,20 @@
+name: Close stale issues and PRs
+
+on:
+  workflow_call:
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/stale@v9
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          stale-issue-message: "이 이슈는 최근 활동이 없어 닫힐 예정입니다. 필요 시 다시 열어주세요."
+          days-before-stale: 30
+          days-before-close: 7
+          exempt-issue-labels: 'pinned,keep'

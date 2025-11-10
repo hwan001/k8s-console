@@ -1,9 +1,7 @@
 name: Clean up old GHCR images
 
 on:
-  schedule:
-    - cron: '0 20 * * 0'  # 매주 일요일 20시 (UTC) -> 매주 월요일 05시 (KST)
-  workflow_dispatch:
+  workflow_call:
 
 permissions:
   packages: write
