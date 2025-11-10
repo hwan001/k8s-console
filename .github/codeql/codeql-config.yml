@@ -20,3 +20,8 @@ paths-ignore:
   - '**/vendor/**'
   - '**/__pycache__/**'
   - '**/.next/**'
+
+# 자동 생성 코드 무시
+packs:
+  - codeql/java-queries@latest
+disable-default-queries: false
