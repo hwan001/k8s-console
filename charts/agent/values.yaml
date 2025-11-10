@@ -1,4 +1,4 @@
-clusterName: "home" 
+clusterName: "home"
 # namespace: "k8s-console"
 replicaCount: 1
 

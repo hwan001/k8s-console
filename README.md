@@ -3,6 +3,7 @@
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPLv3-blue.svg)](/LICENSE)
 [![Build Status](https://img.shields.io/github/actions/workflow/status/hwan001/k8s-console/ci.yaml)](https://github.com/hwan001/k8s-console/actions)
 [![Pull Requests welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/hwan001/k8s-console/pulls)
+[![CodeQL](https://github.com/hwan001/k8s-console/actions/workflows/codeql.yml/badge.svg)](https://github.com/hwan001/k8s-console/actions/workflows/codeql.yml)
 
 **k8s-console**은 여러 Kubernetes 클러스터를 중앙에서 실시간으로 모니터링하고 제어할 수 있는
 **agent 기반 RBAC 콘솔**입니다.
