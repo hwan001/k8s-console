@@ -31,16 +31,16 @@ export const useClusterLiveStore = create<ClusterLiveStore>((set, get) => ({
   subscribeCluster: clusterId => {
     const ws = useWebSocketStore.getState();
 
-    const subscribeChannel = (suffix: string, handler: (payload: any) => void) => {
+    const subscribeChannel = <T>(suffix: string, handler: (payload: T) => void) => {
       const channel = `username:${clusterId}:${suffix}`;
       ws.subscribe(channel, rawPayload => {
         const msg = rawPayload as LiveWSMessage;
-        handler(msg.payload);
+        handler(msg.payload as T);
       });
     };
 
     // --- Metric ---
-    subscribeChannel("metric", (payload: MetricPayload) => {
+    subscribeChannel<MetricPayload>("metric", payload => {
       set(state => ({
         metric: {
           ...state.metric,
@@ -51,7 +51,7 @@ export const useClusterLiveStore = create<ClusterLiveStore>((set, get) => ({
     });
 
     // --- Log ---
-    subscribeChannel("log", (payload: LogPayload) => {
+    subscribeChannel<LogPayload>("log", payload => {
       set(state => ({
         log: {
           ...state.log,

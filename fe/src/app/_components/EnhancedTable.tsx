@@ -4,11 +4,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
 import { alpha } from "@mui/material/styles";
-import Switch from "@mui/material/Switch";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -46,16 +44,32 @@ interface EnhancedTableProps {
   onDeleteSelected?: (ids: number[]) => void;
 }
 
+// // ---- Sorting helpers ----
+// function descendingComparator_<T>(a: T, b: T, orderBy: keyof T) {
+//   if (b[orderBy] < a[orderBy]) return -1;
+//   if (b[orderBy] > a[orderBy]) return 1;
+//   return 0;
+// }
+// function getComparator_<Key extends keyof any>(
+//   order: Order,
+//   orderBy: Key
+// ): (a: { [key in Key]: number | string }, b: { [key in Key]: number | string }) => number {
+//   return order === "desc"
+//     ? (a, b) => descendingComparator(a, b, orderBy)
+//     : (a, b) => -descendingComparator(a, b, orderBy);
+// }
+
 // ---- Sorting helpers ----
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
-  if (b[orderBy] < a[orderBy]) return -1;
-  if (b[orderBy] > a[orderBy]) return 1;
+  const aValue = a[orderBy];
+  const bValue = b[orderBy];
+
+  if (bValue < aValue) return -1;
+  if (bValue > aValue) return 1;
   return 0;
 }
-function getComparator<Key extends keyof any>(
-  order: Order,
-  orderBy: Key
-): (a: { [key in Key]: number | string }, b: { [key in Key]: number | string }) => number {
+
+function getComparator<T>(order: "asc" | "desc", orderBy: keyof T): (a: T, b: T) => number {
   return order === "desc"
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
@@ -179,7 +193,7 @@ export default function EnhancedTable({
   const [orderBy, setOrderBy] = React.useState<keyof Data>(headCells[0]?.id ?? "id");
   const [selected, setSelected] = React.useState<readonly number[]>([]);
   const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
+  const [dense, setDense] = React.useState(true);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Data) => {
@@ -197,16 +211,16 @@ export default function EnhancedTable({
     setSelected([]);
   };
 
-  const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
-    const selectedIndex = selected.indexOf(id);
-    let newSelected: readonly number[] = [];
-    if (selectedIndex === -1) newSelected = newSelected.concat(selected, id);
-    else if (selectedIndex === 0) newSelected = newSelected.concat(selected.slice(1));
-    else if (selectedIndex === selected.length - 1) newSelected = newSelected.concat(selected.slice(0, -1));
-    else if (selectedIndex > 0)
-      newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-    setSelected(newSelected);
-  };
+  // const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
+  //   const selectedIndex = selected.indexOf(id);
+  //   let newSelected: readonly number[] = [];
+  //   if (selectedIndex === -1) newSelected = newSelected.concat(selected, id);
+  //   else if (selectedIndex === 0) newSelected = newSelected.concat(selected.slice(1));
+  //   else if (selectedIndex === selected.length - 1) newSelected = newSelected.concat(selected.slice(0, -1));
+  //   else if (selectedIndex > 0)
+  //     newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
+  //   setSelected(newSelected);
+  // };
 
   const handleChangePage = (event: unknown, newPage: number) => setPage(newPage);
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -216,7 +230,8 @@ export default function EnhancedTable({
   const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => setDense(event.target.checked);
 
   const visibleRows = React.useMemo(
-    () => [...rows].sort(getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
+    () =>
+      [...rows].sort(getComparator<Data>(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
     [order, orderBy, page, rowsPerPage, rows]
   );
 
@@ -280,7 +295,7 @@ export default function EnhancedTable({
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-      <FormControlLabel control={<Switch checked={dense} onChange={handleChangeDense} />} label="Dense padding" />
+      {/* <FormControlLabel control={<Switch checked={dense} onChange={handleChangeDense} />} label="Dense padding" /> */}
     </Box>
   );
 }
