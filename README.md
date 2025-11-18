@@ -2,17 +2,24 @@
 
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPLv3-blue.svg)](/LICENSE)
 [![Build Status](https://img.shields.io/github/actions/workflow/status/hwan001/k8s-console/ci.yaml)](https://github.com/hwan001/k8s-console/actions)
-[![Pull Requests welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/hwan001/k8s-console/pulls)
 [![CodeQL](https://github.com/hwan001/k8s-console/actions/workflows/codeql.yml/badge.svg)](https://github.com/hwan001/k8s-console/actions/workflows/codeql.yml)
+[![Pull Requests welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/hwan001/k8s-console/pulls)
 
-**k8s-console**은 여러 Kubernetes 클러스터를 중앙에서 실시간으로 모니터링하고 제어할 수 있는
-**agent 기반 RBAC 콘솔**입니다.
-추후 AWX처럼 원격 프로비저닝 기능을 지원할 예정입니다.
+**k8s-console**은 여러 Kubernetes 클러스터를 중앙에서 실시간으로 모니터링, 제어, 공유 할 수 있는
+**agent 기반 콘솔 시스템**입니다.
 
-- 웹 기반 실시간 모니터링
-- 클러스터/네임스페이스 단위 RBAC 제어
-- 에이전트 설치만으로 손쉬운 통합
-- 확장 가능한 백엔드 API
+## 기능 및 특성
+
+아래 기능을 개발할 예정입니다.
+
+- RBAC 기반으로 내 클러스터의 리소스를 공유 (또는 판매 + Cluster owner 개념)
+- 클러스터 접근 권한을 UI로 설정하고 config로 제공
+- Billing API를 활용한 사용량 통계
+
+(개발이 완료되면) 아래 특성을 가지고 있습니다.
+
+- 설치 스크립트 또는 OCI 제공으로 쉬운 Agent 설치
+- 오토스케일링 지원 (Self-hosted Server일 경우)
 
 ## 문서
 
